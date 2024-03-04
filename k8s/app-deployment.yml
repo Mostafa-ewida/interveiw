@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    project: test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-backend
+  strategy:
+    type: Recreate 
+  template:
+    metadata:
+      labels:
+        app: flask-backend
+        role: backend-role
+    spec:
+      containers:
+        - name: backend-container
+          image: mostafaewida/test-app:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: app-secret
+            - configMapRef:
+                name: mysql-config # populate db-specific values (needed to keep one source of truth)
+            - secretRef:
+                name: mysql-secret # populate db-specific secrets (needed to keep one source of truth)
+          resources:
+            limits:
+              cpu: 0.5
+            requests:
+              cpu: 0.25 # gives 1/2 of the limit 

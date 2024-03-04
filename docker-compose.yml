@@ -1,0 +1,44 @@
+services:
+
+  db:
+    image: "mysql:8.3"
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  app:
+    image: "mostafaewida/test-app:latest"
+    ports:
+      - "80:80"
+    environment:
+      MYSQL_DBNAME: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
+      MYSQL_HOST: db
+    restart: always
+    depends_on:
+      - db
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    environment:
+        PMA_HOST: db
+        PMA_PORT: 3306
+        PMA_ARBITRARY: 1
+    restart: always
+    ports:
+        - "8080:80"
+    depends_on:
+        - db
+
+volumes:
+  dbdata: 
