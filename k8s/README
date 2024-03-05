@@ -27,6 +27,11 @@ To apply the k8s Manifests , run the following command:
 
 ```kubectl apply -f  k8s/```
 
+but there is a private image you need to get access to first 
+
+```
+kubectl create secret docker-registry regcred  --docker-username=mostafaewida --docker-password=<DOCKERHUB_TOKEN>
+```
 Verify that the k8s resources is running
 
 ```kubectl get pods ```
