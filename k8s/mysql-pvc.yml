@@ -9,6 +9,6 @@ spec:
   storageClassName: manual
   accessModes:
     - ReadWriteMany
-  resources:
+  resources: 
     requests:
       storage: 10Gi # Sets PVC's size

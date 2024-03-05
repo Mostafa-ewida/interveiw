@@ -8,4 +8,3 @@ metadata:
 data:
   MYSQL_DATABASE: app_db
   MYSQL_USER: db_user
-

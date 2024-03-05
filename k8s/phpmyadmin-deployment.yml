@@ -17,3 +17,6 @@ spec:
         image: phpmyadmin/phpmyadmin
         ports:
         - containerPort: 80
+        envFrom:
+          - configMapRef:
+              name: phpmyadmin-config

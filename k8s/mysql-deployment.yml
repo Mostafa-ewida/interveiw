@@ -1,15 +1,15 @@
 apiVersion: apps/v1
-kind: Deployment 
+kind: Deployment
 metadata:
-  name: mysql-deployment 
-  labels:
+ name: mysql-deployment
+ labels:
     project: test
 spec:
-  replicas: 1
-  selector:
+ replicas: 1
+ selector:
     matchLabels:
       app: mysql
-  template:
+ template:
     metadata:
       labels:
         app: mysql
@@ -20,7 +20,7 @@ spec:
           image: mysql:8.3
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 5432 # Exposing the container port 5432 for PostgreSQL client connections.
+            - containerPort: 3306
           envFrom:
             - configMapRef:
                 name: mysql-config
@@ -28,7 +28,7 @@ spec:
                 name: mysql-secret
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: mysqlsdata
+              name: mysqldata
       volumes:
         - name: mysqldata
           persistentVolumeClaim:

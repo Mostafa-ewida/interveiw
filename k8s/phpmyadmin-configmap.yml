@@ -7,5 +7,5 @@ metadata:
     project: test
 data:        
   PMA_HOST: mysql-service
-  PMA_PORT: 3306
-  PMA_ARBITRARY: 1
+  PMA_PORT: "3306"
+  PMA_ARBITRARY: "1"
