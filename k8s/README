@@ -1,0 +1,81 @@
+# how to use this k8s Manifests 
+
+## Create a minikube cluster
+If you haven't already set up a cluster locally, run 
+```minikube start``` to create a cluster.
+
+## Enable the Ingress controller
+To enable the NGINX Ingress controller, run the following command:
+
+```minikube addons enable ingress```
+
+Verify that the NGINX Ingress controller is running
+
+```kubectl get pods -n ingress-nginx```
+
+Note: It can take up to a minute before you see these pods running OK.
+
+The output is similar to:
+```
+NAME                                        READY   STATUS      RESTARTS   AGE
+ingress-nginx-admission-create-9grh8        0/1     Completed   0          8m
+ingress-nginx-controller-7c6974c4d8-4qnx5   1/1     Running     0          8m
+```
+
+## apply the k8s Manifests 
+To apply the k8s Manifests , run the following command:
+
+```kubectl apply -f  k8s/```
+
+Verify that the k8s resources is running
+
+```kubectl get pods ```
+
+Note: It can take up to a minute before you see these pods running OK.
+
+The output is similar to:
+```
+NAME                                     READY   STATUS                       RESTARTS   AGE
+app-deployment-566cc5fc4f-jqthk          1/1     Running                      0          9m
+app-deployment-566cc5fc4f-qgkzs          1/1     Running                      0          9m
+mysql-deployment-f4859bfdb-vxh24         1/1     Running                      0          9m
+phpmyadmin-deployment-5b788975cf-zgl6t   1/1     Running                      0          9m
+```
+
+
+## to verify the ingress service 
+```
+minikube service list
+```
+The output is similar to:
+```
+|---------------|------------------------------------|--------------|---------------------------|
+|   NAMESPACE   |                NAME                | TARGET PORT  |            URL            |
+|---------------|------------------------------------|--------------|---------------------------|
+| default       | backend-service                    | No node port |                           |
+| default       | kubernetes                         | No node port |                           |
+| default       | mysql-service                      | No node port |                           |
+| default       | phpmyadmin-service                 | No node port |                           |
+| ingress-nginx | ingress-nginx-controller           | http/80      | http://192.168.49.2:30080 |
+|               |                                    | https/443    | http://192.168.49.2:30443 |
+| ingress-nginx | ingress-nginx-controller-admission | No node port |                           |
+| kube-system   | kube-dns                           | No node port |                           |
+|---------------|------------------------------------|--------------|---------------------------|
+```
+
+
+## to verify the ingress service has an IP
+```
+kubectl get ingress
+
+```
+The output is similar to:
+```
+NAME              CLASS    HOSTS              ADDRESS        PORTS   AGE
+ingress-service   nginx    local.test         192.168.49.2   80      36m
+```
+then test the ingress , run the following command:
+
+```
+curl --resolve "local.test:80:$( minikube ip )" -i http://local.test
+```
